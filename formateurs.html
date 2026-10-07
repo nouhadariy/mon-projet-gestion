@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Formateurs</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <style>
+
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+
+  body{
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg,#3d0c1e,#5a102c,#7b1e3d);
+    min-height:100vh;
+    color:white;
+  }
+
+  /* NAVBAR */
+
+  .navbar{
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    padding:18px 35px;
+    display:flex;
+    justify-content:center;
+    gap:35px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.2);
+  }
+
+  .navbar a{
+    text-decoration:none;
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    position:relative;
+    transition:0.3s;
+  }
+
+  .navbar a::after{
+    content:"";
+    position:absolute;
+    width:0%;
+    height:2px;
+    background:#ffb3c6;
+    left:0;
+    bottom:-6px;
+    transition:0.3s;
+  }
+
+  .navbar a:hover::after{
+    width:100%;
+  }
+
+  .navbar a:hover{
+    color:#ffd9e3;
+  }
+
+  /* CONTAINER */
+
+  .container{
+    width:92%;
+    max-width:1200px;
+    margin:40px auto;
+  }
+
+  h1{
+    text-align:center;
+    margin-bottom:35px;
+    font-size:42px;
+    color:#fff0f5;
+    text-shadow:2px 2px 10px rgba(0,0,0,0.3);
+  }
+
+  /* CARDS */
+
+  .formulaire,
+  .tableau-section{
+    background: rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    border-radius:22px;
+    padding:30px;
+    margin-bottom:35px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+  }
+
+  .formulaire h2,
+  .tableau-section h2{
+    margin-bottom:25px;
+    color:#ffe3eb;
+    font-size:24px;
+  }
+
+  /* INPUTS */
+
+  .ligne{
+    display:flex;
+    gap:20px;
+    margin-bottom:15px;
+    flex-wrap:wrap;
+  }
+
+  .ligne div{
+    flex:1;
+    min-width:240px;
+  }
+
+  label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:#ffe5ec;
+  }
+
+  input,
+  select{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:12px;
+    background:rgba(255,255,255,0.12);
+    color:white;
+    font-size:14px;
+    outline:none;
+    transition:0.3s;
+  }
+
+  input::placeholder{
+    color:#f3c9d4;
+  }
+
+  select{
+    color:white;
+  }
+
+  option{
+    color:black;
+  }
+
+  input:focus,
+  select:focus{
+    background:rgba(255,255,255,0.18);
+    border:1px solid #ffb3c6;
+    transform:scale(1.01);
+  }
+
+  /* BUTTONS */
+
+  button{
+    background: linear-gradient(135deg,#a61c4b,#d6336c);
+    color:white;
+    border:none;
+    padding:12px 24px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+    transition:0.3s;
+    margin-top:10px;
+  }
+
+  button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(0,0,0,0.25);
+  }
+
+  .btn-annuler{
+    background:linear-gradient(135deg,#777,#999);
+  }
+
+  /* ERROR */
+
+  #erreur{
+    display:none;
+    background:rgba(255,0,0,0.15);
+    border:1px solid #ff8080;
+    color:#fff;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:20px;
+  }
+
+  /* TABLE */
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    overflow:hidden;
+    border-radius:15px;
+  }
+
+  th{
+    background:#8b1e46;
+    color:white;
+    padding:15px;
+    font-size:14px;
+    text-align:left;
+  }
+
+  td{
+    padding:14px;
+    background:rgba(255,255,255,0.05);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    color:#fff5f7;
+  }
+
+  tr:hover td{
+    background:rgba(255,255,255,0.1);
+    transition:0.3s;
+  }
+
+  /* MODAL */
+
+  #modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+    z-index:999;
+  }
+
+  .modal-boite{
+    width:420px;
+    max-width:90%;
+    margin:90px auto;
+    background:linear-gradient(135deg,#5e1735,#7b1e3d);
+    padding:30px;
+    border-radius:22px;
+    box-shadow:0 10px 35px rgba(0,0,0,0.4);
+  }
+
+  .modal-boite h2{
+    margin-bottom:10px;
+    color:#fff0f5;
+  }
+
+  .sous-titre{
+    color:#ffd6e0;
+    margin-bottom:20px;
+    font-size:14px;
+  }
+
+</style>
+</head>
+<body>
+
+  <div class="navbar">
+    <a href="/">Accueil</a>
+    <a href="/stagiaires.html">Stagiaires</a>
+    <a href="/formateurs.html">Formateurs</a>
+  </div>
+
+  <div class="container">
+    <h1>Gestion des Formateurs</h1>
+
+    <!-- Formulaire ajout -->
+    <div class="formulaire">
+      <h2>Ajouter un formateur</h2>
+      <div id="erreur"></div>
+
+      <div class="ligne">
+        <div>
+          <label>Nom :</label>
+          <input type="text" id="nom" placeholder="NAJEM">
+        </div>
+        <div>
+          <label>Prenom :</label>
+          <input type="text" id="prenom" placeholder="NAJI">
+        </div>
+      </div>
+
+      <div class="ligne">
+        <div>
+          <label>Age :</label>
+          <input type="number" id="age" placeholder=35" min="20" max="70">
+        </div>
+        <div>
+          <label>Matricule :</label>
+          <input type="text" id="matricule" placeholder="FORM-001">
+        </div>
+      </div>
+
+      <div class="ligne">
+        <div>
+          <label>Specialite :</label>
+          <select id="specialite">
+            <option value="">-- Choisir --</option>
+            <option>JavaScript et Web</option>
+            <option>Reseaux et Securite</option>
+            <option>Base de Donnees</option>
+            <option>Intelligence Artificielle</option>
+            <option>Developpement Mobile</option>
+          </select>
+        </div>
+        <div>
+          <label>Email :</label>
+          <input type="email" id="email" placeholder="nom@formation.ma">
+        </div>
+      </div>
+
+      <button onclick="ajouter()">Ajouter</button>
+    </div>
+
+    <!-- Tableau -->
+    <div class="tableau-section">
+      <h2>Liste des formateurs</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Nom Prenom</th><th>Age</th>
+            <th>Matricule</th><th>Specialite</th><th>Email</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="7" style="text-align:center;color:gray;">Chargement...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal modification -->
+  <div id="modal">
+    <div class="modal-boite">
+      <h2>Modifier le formateur</h2>
+      <div class="sous-titre" id="editNom"></div>
+      <input type="hidden" id="editId">
+
+      <label>Specialite :</label>
+      <select id="editSpecialite">
+        <option>JavaScript et Web</option>
+        <option>Reseaux et Securite</option>
+        <option>Base de Donnees</option>
+        <option>Intelligence Artificielle</option>
+        <option>Developpement Mobile</option>
+      </select>
+
+      <label>Age :</label>
+      <input type="number" id="editAge" min="20" max="70">
+
+      <br>
+      <button onclick="sauvegarder()">Sauvegarder</button>
+      <button class="btn-annuler" onclick="fermerModal()">Annuler</button>
+    </div>
+  </div>
+
+  <script>
+    class Personne {
+      constructor(nom, prenom, age) {
+        this.nom = nom; this.prenom = prenom; this.age = age;
+      }
+    }
+    class Formateur extends Personne {
+      constructor(nom, prenom, age, matricule, specialite, email) {
+        super(nom, prenom, age);
+        this.matricule  = matricule;
+        this.specialite = specialite;
+        this.email      = email;
+      }
+    }
+  </script>
+  <script src="/formateur.js"></script>
+
+</body>
+</html>

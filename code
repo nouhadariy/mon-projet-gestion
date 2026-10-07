@@ -1,0 +1,92 @@
+$(document).ready(function() {
+    
+    // URL de base de notre API
+    const API_URL = "http://localhost:3000/api/formateurs";
+
+    // ----------------------------------------------------
+    // EXERCICE 1 : Validation et Ajout (POST)
+    // ----------------------------------------------------
+    $("#btn-ajouter").on("click", function() {
+        // 1. Récupération des valeurs
+        let matricule = $("#matricule").val().trim();
+        let nom = $("#nom").val().trim();
+        let specialite = $("#specialite").val();
+        let salaire = parseFloat($("#salaire").val());
+
+        let msgErreur = $("#erreur-msg");
+
+        // 2. Validation des champs vides
+        if (matricule === "" || nom === "" || specialite === "" || isNaN(salaire)) {
+            msgErreur.text("Erreur : Tous les champs doivent être remplis.").show();
+            return; // Bloque l'exécution
+        }
+
+        // 3. Validation du salaire
+        if (salaire < 5000) {
+            msgErreur.text("Erreur : Le salaire doit être supérieur ou égal à 5000.").show();
+            return;
+        }
+
+        // Si tout est valide, on cache le message d'erreur
+        msgErreur.hide();
+
+        // 4. Préparation de l'objet et appel API (POST)
+        let nouveauFormateur = {
+            matricule: matricule,
+            nom: nom,
+            specialite: specialite,
+            salaire: salaire
+        };
+
+        $.ajax({
+            url: API_URL,
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(nouveauFormateur),
+            success: function(response) {
+                alert("Formateur ajouté avec succès !");
+                // Vider les champs après l'ajout
+                $("#matricule").val("");
+                $("#nom").val("");
+                $("#specialite").val("");
+                $("#salaire").val("");
+            },
+            error: function(erreur) {
+                console.error("Erreur lors de l'ajout", erreur);
+            }
+        });
+    });
+
+    // ----------------------------------------------------
+    // EXERCICE 2 : Affichage des données (GET)
+    // ----------------------------------------------------
+    $("#btn-afficher").on("click", function() {
+        $.ajax({
+            url: API_URL,
+            method: "GET",
+            success: function(data) {
+                let tbody = $("#tableFormateurs");
+                
+                // 1. Vider le tableau HTML avant d'ajouter les nouvelles lignes
+                tbody.empty(); 
+
+                // 2. Parcourir les données récupérées et créer les lignes <tr>
+                data.forEach(function(formateur) {
+                    let ligne = `<tr>
+                        <td>${formateur.matricule}</td>
+                        <td>${formateur.nom}</td>
+                        <td>${formateur.specialite}</td>
+                        <td>${formateur.salaire} DH</td>
+                    </tr>`;
+                    
+                    // Ajouter la ligne dans le tbody
+                    tbody.append(ligne);
+                });
+            },
+            error: function(erreur) {
+                console.error("Erreur lors de la récupération", erreur);
+            }
+        });
+    });
+
+});

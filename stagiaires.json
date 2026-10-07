@@ -1,0 +1,20 @@
+[
+  {
+    "nom": "eddariy",
+    "prenom": "nouhaila",
+    "age": 24,
+    "nInscription": "46",
+    "filiere": "Developpement Web",
+    "groupe": "G3",
+    "id": 3
+  },
+  {
+    "nom": "eddariy",
+    "prenom": "nouhaila",
+    "age": 24,
+    "nInscription": "44",
+    "filiere": "Developpement Mobile",
+    "groupe": "G1",
+    "id": 4
+  }
+]
